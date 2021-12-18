@@ -1,6 +1,6 @@
 <?php
 $Z = fopen("5.php","a");
-fwrite($Z);
+fwrite($Z,"");
 fclose($Z);
 
 ?>
