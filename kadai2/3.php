@@ -24,11 +24,11 @@ if(isset($_GET['name']) && isset($_GET['comment'])){
 </form>
 <?php
 $Y = file("9.txt");
-print_r($Y);
+//print_r($Y);
 //$X = explode("<>", $Y);
 foreach($Y as $value){
 	$D = explode("<>", $value);
-    echo "ID: ". $D[0]. "name: ". $D[1]. "comment: ". $D[2]. "date:". $D[3]. "<br>"; 
+    echo "ID: ". $D[0]. " name: ". $D[1]. " comment: ". $D[2]. " date:". $D[3]. "<br>"; 
 
    	}
 
