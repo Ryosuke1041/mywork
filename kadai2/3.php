@@ -24,9 +24,18 @@ if(isset($_GET['name']) && isset($_GET['comment'])){
 </form>
 <?php
 $Y = file("9.txt");
-$X = explode("<>", $Y);
-foreach($X as $value){
-    echo $value."<br>";
-   }
+print_r($Y);
+//$X = explode("<>", $Y);
+foreach($Y as $value){
+	$D = explode("<>", $value."<br>");
+	echo "ID:";
+	print_r($D[0]);
+	echo "name:";
+	print_r($D[1]);
+	echo "comment:";
+	print_r($D[2]);
+	echo "date:";
+	print_r($D[3]."<br>");
+   	}
 
 ?>
