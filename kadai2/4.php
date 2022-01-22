@@ -14,7 +14,19 @@ if(isset($_GET['name']) && isset($_GET['comment'])){
     fwrite($Z, $number."<>".$name."<>".$comment."<>".$date."\n");
     fclose($Z);
 }
-
+if(isset($_POST['delete'])){
+    $T = $_POST['delete'];
+    $V = file("9.txt");
+    $X = fopen("9.txt", "w");
+    for ($i = 0; $i < count($V); $i++){
+        $W = explode("<>", $V[$i]);
+        $U = $W[0];
+        if ($U != $T){ 
+            fwrite($X, $V[$i]);
+        }
+    }
+    fclose($X);
+}
 ?>
 
 <form action="4.php" method="get">
@@ -24,7 +36,7 @@ if(isset($_GET['name']) && isset($_GET['comment'])){
 </form>
 
 <?php
-$Y = file("9.txt");
+$fileName = file("9.txt");
 foreach($Y as $value){
 	$D = explode("<>", $value);
     echo "ID: ". $D[0]. " name: ". $D[1]. " comment: ". $D[2]. " date:". $D[3]. "<br>"; 
@@ -36,20 +48,3 @@ foreach($Y as $value){
     <input type = "text" name = "delete"/>
     <input type = "submit" value = "削除"/>
 </form>
-
-<?php
-if(isset($_POST['delete'])){
-    $T = $_POST['delete'];
-    $V = file("9.txt");
-    $X = fopen("9.txt", "w");
-    for ($i = 0; $i < count($V); $i++){
-        $W = explode("<>", $V[$i]);
-        $U = $W[0];
-        if ($U != $T){ 
-            fwrite($X, $V[$i].PHP_EOL);
-        }
-    }
-    fclose($X);
-}
-
-?>
