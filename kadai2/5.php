@@ -16,7 +16,7 @@ if(isset($_GET['name']) && isset($_GET['comment'])){
 }
 if(isset($_POST['delete'])){
     $T = $_POST['delete'];
-    $V = file("9.txt");
+    $V = file("9.txt",FILE_IGNORE_NEW_LINES);
     $X = fopen("9.txt", "w");
     for ($i = 0; $i < count($V); $i++){
         $W = explode("<>", $V[$i]);
@@ -29,11 +29,11 @@ if(isset($_POST['delete'])){
 }
 
 if(!empty($_POST["edit"])){
-    $file = file("9.txt",FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $file = file("9.txt",FILE_IGNORE_NEW_LINES);
     foreach($file as $value){
         $line = explode("<>",$value);
         $number = $line[0];
-        if($numbe r == $_POST["edit"]){
+        if($number == $_POST["edit"]){
             $A = $line[0];
             $B = $line[1];
             $C = $line[2];
@@ -41,12 +41,13 @@ if(!empty($_POST["edit"])){
     }
 }
 if(!empty($B) && !empty($C)){
+    echo 'エラー';
     $file = file("9.txt",FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     $fp = fopen($file,"w");
     foreach($file as $value){
         $line = explode("<>",$value);
         $number = $line[0];
-        if($number! = $A){
+        if($number != $A){
             fwrite($fp,$value);
         }else{
             fwrite($fp,$_POST["edit"]."<>".$name."<>".$comment."<>".$data);
@@ -70,10 +71,12 @@ if(!empty($B) && !empty($C)){
 </form>
 
 <?php
-$Y = file("9.txt");
-foreach($Y as $value){
-	$D = explode("<>", $value);
-    echo "ID: ". $D[0]. " name: ". $D[1]. " comment: ". $D[2]. " date:". $D[3]. "<br>"; 
+if(file_exists("9.txt")){
+    $Y = file("9.txt");
+    foreach($Y as $value){
+	    $D = explode("<>", $value);
+        echo "ID: ". $D[0]. " name: ". $D[1]. " comment: ". $D[2]. " date:". $D[3]. "<br>"; 
 
    	}
+}
 ?>

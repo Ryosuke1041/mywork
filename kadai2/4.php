@@ -22,7 +22,15 @@ if(isset($_POST['delete'])){
         $W = explode("<>", $V[$i]);
         $U = $W[0];
         if ($U != $T){ 
-            fwrite($X, $V[$i]);
+           if($T < $U){
+               $number = $U - 1;
+           } else{
+               $number = $U;
+           }
+            $name = $W[1];
+            $comment = $W[2];
+            $date = $W[3];
+            fwrite($X, $number."<>".$name."<>".$comment."<>".$date);
         }
     }
     fclose($X);
@@ -36,12 +44,14 @@ if(isset($_POST['delete'])){
 </form>
 
 <?php
-$fileName = file("9.txt");
-foreach($Y as $value){
-	$D = explode("<>", $value);
-    echo "ID: ". $D[0]. " name: ". $D[1]. " comment: ". $D[2]. " date:". $D[3]. "<br>"; 
+if(file_exists("9.txt")){
+    $fileName = file("9.txt");
+    foreach($fileName as $value){
+        $D = explode("<>", $value);
+        echo "ID: ". $D[0]. " name: ". $D[1]. " comment: ". $D[2]. " date:". $D[3]. "<br>"; 
 
-   	}
+    }
+}
 ?>
 
 <form action = "4.php" method = "post">
