@@ -7,6 +7,7 @@ if(file_exists("9.txt")){
     $number = 1;
 }
 $date = date("Y/m/d H:i:s");
+//通常投稿処理
 if(isset($_GET['name']) && isset($_GET['comment'])){
     $name = $_GET['name'];
     $comment = $_GET['comment'];
@@ -14,6 +15,7 @@ if(isset($_GET['name']) && isset($_GET['comment'])){
     fwrite($Z, $number."<>".$name."<>".$comment."<>".$date."\n");
     fclose($Z);
 }
+//削除処理
 if(isset($_POST['delete'])){
     $T = $_POST['delete'];
     $V = file("9.txt");
@@ -36,6 +38,7 @@ if(isset($_POST['delete'])){
     fclose($X);
 }
 
+//編集処理
 if(!empty($_POST["edit"])){
     $editNumber = $_POST["edit"];
     $file = file("9.txt",FILE_IGNORE_NEW_LINES);
@@ -43,40 +46,30 @@ if(!empty($_POST["edit"])){
         $line = explode("<>",$value);
         $number = $line[0];
         if($number == $editNumber){
-            $A = $line[0];
-            $B = $line[1];
-            $C = $line[2];
-            $D = $line[3];
+            $edit_Number = $line[0];
+            $edit_Name = $line[1];
+            $edit_Comment = $line[2];
+            $edit_Date = $line[3];
         }
     }
-}
-if(!empty($B) && !empty($C)){
-    $file = file("9.txt",FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    $fp = fopen($file,"w");
-    foreach($file as $value){
-        $line = explode("<>",$value);
-        $number = $line[0];
-        if($number != $A){
-            fwrite($fp,$value);
-        }else{
-            fwrite($fp,$_POST["edit"]."<>".$name."<>".$comment."<>".$data);
-        }
-    }
-    fclose($fp);
 }
 
 ?>
 
 <form action="5.php" method="get">
-名前: <input type="text" name="name" />
-コメント: <input type="text" name="comment" />
-
+名前: <input type="text" name="name" value="<?php echo $edit_Name;?>" />
+コメント: <input type="text" name="comment" value="<?php echo $edit_Comment;?>"/>
 <input type="submit" value ="送信">
+</form>
+
+<form action="5.php" method="get">
     <input type = "text" name = "delete"/>
     <input type = "submit" value = "削除"/>
+</form>
 
-<input type="text" name="number" value="">
-<input type="submit" name="edit" value="編集">
+<form action="5.php" method="get">
+    <input type="text" name="number" value="">
+    <input type="submit" name="edit" value="編集">
 </form>
 
 <?php
