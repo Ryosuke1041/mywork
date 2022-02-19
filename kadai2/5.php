@@ -16,8 +16,8 @@ if(isset($_GET['name']) && isset($_GET['comment'])){
     fclose($Z);
 }
 //削除処理
-if(isset($_POST['delete'])){
-    $T = $_POST['delete'];
+if(isset($_GET['delete'])){
+    $T = $_GET['delete'];
     $V = file("9.txt");
     $X = fopen("9.txt", "w");
     for ($i = 0; $i < count($V); $i++){
@@ -39,17 +39,18 @@ if(isset($_POST['delete'])){
 }
 
 //編集処理
-if(!empty($_POST["edit"])){
-    $editNumber = $_POST["edit"];
+$editName = "";
+$editComment = "";
+if(!empty($_GET["edit"])){
+    $editNumber = $_GET["edit"];
     $file = file("9.txt",FILE_IGNORE_NEW_LINES);
     foreach($file as $value){
         $line = explode("<>",$value);
         $number = $line[0];
         if($number == $editNumber){
-            $edit_Number = $line[0];
-            $edit_Name = $line[1];
-            $edit_Comment = $line[2];
-            $edit_Date = $line[3];
+            $editName = $line[1];
+            $editComment = $line[2];
+            $editDate = $line[3];
         }
     }
 }
@@ -57,8 +58,8 @@ if(!empty($_POST["edit"])){
 ?>
 
 <form action="5.php" method="get">
-名前: <input type="text" name="name" value="<?php echo $edit_Name;?>" />
-コメント: <input type="text" name="comment" value="<?php echo $edit_Comment;?>"/>
+名前: <input type="text" name="name" value="<?php echo $editName;?>" />
+コメント: <input type="text" name="comment" value="<?php echo $editComment;?>"/>
 <input type="submit" value ="送信">
 </form>
 
