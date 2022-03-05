@@ -7,14 +7,27 @@ if(file_exists("9.txt")){
     $number = 1;
 }
 $date = date("Y/m/d H:i:s");
-//通常投稿処理
-if(isset($_GET['name']) && isset($_GET['comment'])){
+//編集投稿処理、通常投稿処理
+if(isset($_GET['edit_flag'])&&($_GET['edit_flag'] != 0)){
+    $file = file("9.txt",FILE_IGNORE_NEW_LINES);
+    $Open = fopen("9.txt","w");
+    for ($i = 0; $i < count($file); $i++){
+        $line = explode("<>", $file[$i]);
+        if ($line[0] == $editFlag){
+            fwrite($Open,$editFlag . "<>" . $name . "<>" . $comment . "<>" . $date . "\n");
+        } else {
+            fwrite($Open,$line);
+        }
+    }
+    fclose($Open);
+}elseif(isset($_GET['name']) && isset($_GET['comment'])){
     $name = $_GET['name'];
     $comment = $_GET['comment'];
-    $Z = fopen("9.txt","a");
-    fwrite($Z, $number."<>".$name."<>".$comment."<>".$date."\n");
-    fclose($Z);
+    $Write = fopen("9.txt","a");
+    fwrite($Write, $number."<>".$name."<>".$comment."<>".$date."\n");
+    fclose($Write);
 }
+
 //削除処理
 if(isset($_GET['delete'])){
     $T = $_GET['delete'];
@@ -39,6 +52,7 @@ if(isset($_GET['delete'])){
 }
 
 //編集処理
+$editFlag = 0;
 $editName = "";
 $editComment = "";
 if(!empty($_GET["edit"])){
@@ -53,14 +67,16 @@ if(!empty($_GET["edit"])){
             $editDate = $line[3];
         }
     }
+    $editFlag = $editNumber;
 }
 
 ?>
 
 <form action="5.php" method="get">
-名前: <input type="text" name="name" value="<?php echo $editName;?>" />
-コメント: <input type="text" name="comment" value="<?php echo $editComment;?>"/>
-<input type="submit" value ="送信">
+    名前: <input type="text" name="name" value="<?php echo $editName;?>" />
+    コメント: <input type="text" name="comment" value="<?php echo $editComment;?>"/>
+    
+    <input type="submit" value ="送信">
 </form>
 
 <form action="5.php" method="get">
@@ -69,8 +85,9 @@ if(!empty($_GET["edit"])){
 </form>
 
 <form action="5.php" method="get">
-    <input type="text" name="number" value="">
-    <input type="submit" name="edit" value="編集">
+    <input type="text" name="edit"/>
+    <input type="submit" value="編集">
+    <input type="hidden" name="edit_flag" value="<?php echo $editFlag;?>"/>
 </form>
 
 <?php
