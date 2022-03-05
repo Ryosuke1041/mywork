@@ -7,16 +7,20 @@ if(file_exists("9.txt")){
     $number = 1;
 }
 $date = date("Y/m/d H:i:s");
+
 //編集投稿処理、通常投稿処理
 if(isset($_GET['edit_flag'])&&($_GET['edit_flag'] != 0)){
-    $file = file("9.txt",FILE_IGNORE_NEW_LINES);
+    $editFlag = $_GET['edit_flag'];
+    $file = file("9.txt");
     $Open = fopen("9.txt","w");
     for ($i = 0; $i < count($file); $i++){
         $line = explode("<>", $file[$i]);
+        $name = $_GET['name'];
+        $comment = $_GET['comment'];
         if ($line[0] == $editFlag){
-            fwrite($Open,$editFlag . "<>" . $name . "<>" . $comment . "<>" . $date . "\n");
+            fwrite($Open,$editFlag . "<>" . $name . "<>" . $comment . "<>" . $date . "  (編集済)". "\n");
         } else {
-            fwrite($Open,$line);
+            fwrite($Open,$file[$i]);
         }
     }
     fclose($Open);
@@ -29,26 +33,26 @@ if(isset($_GET['edit_flag'])&&($_GET['edit_flag'] != 0)){
 }
 
 //削除処理
-if(isset($_GET['delete'])){
-    $T = $_GET['delete'];
-    $V = file("9.txt");
-    $X = fopen("9.txt", "w");
-    for ($i = 0; $i < count($V); $i++){
-        $W = explode("<>", $V[$i]);
-        $U = $W[0];
-        if ($U != $T){ 
-           if($T < $U){
-               $number = $U - 1;
+if(!empty($_GET['delete'])){
+    $delete = $_GET['delete'];
+    $file = file("9.txt");
+    $fo = fopen("9.txt", "w");
+    for ($i = 0; $i < count($file); $i++){
+        $line = explode("<>", $file[$i]);
+        $lineNumber = $line[0];
+        if ($lineNumber != $delete){ 
+           if($delete < $lineNumber){
+               $number = $lineNumber - 1;
            } else{
-               $number = $U;
+               $number = $lineNumber;
            }
-            $name = $W[1];
-            $comment = $W[2];
-            $date = $W[3];
-            fwrite($X, $number."<>".$name."<>".$comment."<>".$date);
+            $name = $line[1];
+            $comment = $line[2];
+            $date = $line[3];
+            fwrite($fo, $number."<>".$name."<>".$comment."<>".$date);
         }
     }
-    fclose($X);
+    fclose($fo);
 }
 
 //編集処理
@@ -75,7 +79,7 @@ if(!empty($_GET["edit"])){
 <form action="5.php" method="get">
     名前: <input type="text" name="name" value="<?php echo $editName;?>" />
     コメント: <input type="text" name="comment" value="<?php echo $editComment;?>"/>
-    
+    <input type="hidden" name="edit_flag" value="<?php echo $editFlag;?>"/>
     <input type="submit" value ="送信">
 </form>
 
@@ -87,7 +91,7 @@ if(!empty($_GET["edit"])){
 <form action="5.php" method="get">
     <input type="text" name="edit"/>
     <input type="submit" value="編集">
-    <input type="hidden" name="edit_flag" value="<?php echo $editFlag;?>"/>
+    
 </form>
 
 <?php
