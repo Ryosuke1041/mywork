@@ -46,31 +46,35 @@ if(isset($_POST['passdelete'])){
         for ($i = 0; $i < count($file); $i++){
             $line = explode("<>", $file[$i]);     
             $lineNumber = $line[0];
-            $NoT++;
             if ($lineNumber != $delete){ 
                 if($delete < $lineNumber){
                     $number = $lineNumber - 1;
                 } else{
                     $number = $lineNumber;
                 }
+                $name = $line[1];
+                $comment = $line[2];
+                $date = $line[3];
+                $pass = $line[4];
+                fwrite($fo, $number."<>".$name."<>".$comment."<>".$date."<>".$pass);
             }else{
                 if($_POST['passdelete'] != $line[4]){
                     $PassDelete = $_POST['passdelete'];
                     $fp = fopen("9.txt","w");
                     for($j = 0; $j < count($file); $j++){
                         $lines = explode("<>",$file[$j]);
-                        if( <= $NoT)
+                        $deleteNumber = $lines[0];
+                        $name = $lines[1];
+                        $comment = $lines[2];
+                        $date = $lines[3];
+                        $pass = $lines[4];
+                        fwrite($fp, $deleteNumber."<>".$name."<>".$comment."<>".$date."<>".$pass);
                     }
+                    echo "パスワードが違います";
+                    fclose($fp);
+                    break;
                 }
-            }
-            $name = $line[1];
-            $comment = $line[2];
-            $date = $line[3];
-            $pass = $line[4];
-            fwrite($fo, $number."<>".$name."<>".$comment."<>".$date."<>".$pass);
-
-                
-            
+            }    
         }
         fclose($fo);
     }
