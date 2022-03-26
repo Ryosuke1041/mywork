@@ -37,28 +37,40 @@ $date = date("Y/m/d H:i:s");
 
 
 //削除処理
+$NoT = 0;
 if(isset($_POST['passdelete'])){
     if(!empty($_POST['delete'])){
         $delete = $_POST['delete'];
         $file = file("9.txt");
         $fo = fopen("9.txt", "w");       
         for ($i = 0; $i < count($file); $i++){
-            $line = explode("<>", $file[$i]);
-            if($_POST['passdelete'] == $line[4]){
-                $lineNumber = $line[0];
-                if ($lineNumber != $delete){ 
-                    if($delete < $lineNumber){
-                        $number = $lineNumber - 1;
-                    } else{
-                        $number = $lineNumber;
+            $line = explode("<>", $file[$i]);     
+            $lineNumber = $line[0];
+            $NoT++;
+            if ($lineNumber != $delete){ 
+                if($delete < $lineNumber){
+                    $number = $lineNumber - 1;
+                } else{
+                    $number = $lineNumber;
+                }
+            }else{
+                if($_POST['passdelete'] != $line[4]){
+                    $PassDelete = $_POST['passdelete'];
+                    $fp = fopen("9.txt","w");
+                    for($j = 0; $j < count($file); $j++){
+                        $lines = explode("<>",$file[$j]);
+                        if( <= $NoT)
                     }
-                
-                $name = $line[1];
-                $comment = $line[2];
-                $date = $line[3];
-                fwrite($fo, $number."<>".$name."<>".$comment."<>".$date);
                 }
             }
+            $name = $line[1];
+            $comment = $line[2];
+            $date = $line[3];
+            $pass = $line[4];
+            fwrite($fo, $number."<>".$name."<>".$comment."<>".$date."<>".$pass);
+
+                
+            
         }
         fclose($fo);
     }
