@@ -9,31 +9,31 @@ if(file_exists("9.txt")){
 $date = date("Y/m/d H:i:s");
 
 //編集投稿処理、通常投稿処理
-
-    if(isset($_POST['edit_flag'])&&($_POST['edit_flag'] != 0) && isset($_POST['passedit'])){
-        $editFlag = $_POST['edit_flag'];
-        $passwordedit = $_POST['passedit'];
-        $file = file("9.txt");
-        $Open = fopen("9.txt","w");
-        for ($i = 0; $i < count($file); $i++){
-            $line = explode("<>", $file[$i]);
-            $name = $_POST['name'];
-            $comment = $_POST['comment'];
-            if ($line[0] == $editFlag){
-                fwrite($Open,$editFlag . "<>" . $name . "<>" . $comment . "<>" . $date . "<>" . $passwordedit . "  (編集済)". "\n");
-            } else {
-                fwrite($Open,$file[$i]);
-            }
-        }
-        fclose($Open);
-    }elseif(isset($_POST['name']) && isset($_POST['comment']) && isset($_POST['pass'])){
+//送信ボタンを押した後の処理
+if(isset($_POST['edit_flag'])&&($_POST['edit_flag'] != 0)){
+    $editFlag = $_POST['edit_flag'];
+    $file = file("9.txt");
+    $Open = fopen("9.txt","w");
+    for ($i = 0; $i < count($file); $i++){
+        $line = explode("<>", $file[$i]);
         $name = $_POST['name'];
         $comment = $_POST['comment'];
-        $password = $_POST['pass'];
-        $Write = fopen("9.txt","a");
-        fwrite($Write, $number."<>".$name."<>".$comment."<>".$date."<>".$password."\n");
-        fclose($Write);
+        $passwordedit = $line[4];
+        if ($line[0] == $editFlag){
+            fwrite($Open,$editFlag . "<>" . $name . "<>" . $comment . "<>" . $date . "<>" . $passwordedit . "  (編集済)". "\n");
+        } else {
+            fwrite($Open,$file[$i]);
+        }
     }
+    fclose($Open);
+}elseif(isset($_POST['name']) && isset($_POST['comment']) && isset($_POST['pass'])){
+    $name = $_POST['name'];
+    $comment = $_POST['comment'];
+    $password = $_POST['pass'];
+    $Write = fopen("9.txt","a");
+    fwrite($Write, $number."<>".$name."<>".$comment."<>".$date."<>".$password."\n");
+    fclose($Write);
+}
 
 
 //削除処理
@@ -79,12 +79,13 @@ if(isset($_POST['passdelete'])){
         fclose($fo);
     }
 }
-//編集処理
+//編集処理(編集ボタンを押した後の処理)
+$passwordedit = "";
 $editFlag = 0;
 $editName = "";
 $editComment = "";
 if(!empty($_POST["edit"])){
-
+    $passwordedit = $_POST["passedit"];
     $editNumber = $_POST["edit"];
     $file = file("9.txt",FILE_IGNORE_NEW_LINES);
     foreach($file as $value){
@@ -109,7 +110,7 @@ if(!empty($_POST["edit"])){
     コメント: <input type="text" name="comment" value="<?php echo $editComment;?>"/><br />
     <input type="hidden" name="edit_flag" value="<?php echo $editFlag;?>"/>
     パスワードを入力してください:
-    <input type="password" name="pass"><br />
+    <input type="password" name="pass" value="<?php echo $passwordedit;?>"><br />
     <input type="submit" value ="送信"><br />
 </form>
 
