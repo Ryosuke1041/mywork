@@ -113,8 +113,13 @@ if(!empty($_POST["edit"])){
 }
 
 ?>
+<form action="confirm.php" method="post">
+    会員IDを入力:<input type="text" name="user" required>
+    パスワードを入力：<input type="password" name="password" required>
+    <input type="submit" value="ログイン">
+</form>
 
-<form action="6.php" method="post">
+<form action="7.php" method="post">
     名前: <input type="text" name="name" value="<?php echo $editName;?>" /><br />
     コメント: <input type="text" name="comment" value="<?php echo $editComment;?>"/><br />
     <input type="hidden" name="edit_flag" value="<?php echo $editFlag;?>"/>
@@ -123,13 +128,13 @@ if(!empty($_POST["edit"])){
     <input type="submit" value ="送信"><br />
 </form>
 
-<form action="6.php" method="post">
+<form action="7.php" method="post">
     <input type = "text" name = "delete" placeholder="ID"/>
     <input type="password" name="passdelete" />
     <input type = "submit" value = "削除"/>
 </form>
 
-<form action="6.php" method="post">
+<form action="7.php" method="post">
     <input type="text" name="edit" placeholder="ID"/>
     <input type="password" name="passedit"/>
     <input type="submit" value="編集">
