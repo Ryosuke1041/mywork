@@ -66,6 +66,8 @@ etc
 7.入力したデータをupdateによって編集する
 8.入力したデータをdeleteによって削除する
 
+$sql = 'select * from animeTable';
+$stmt = $pdo->query($sql);
 
 ■応用
 1.簡易掲示板の際にはデータ保存をテキストで行っていたが、それを保存先をMysqlに変更して作成する
