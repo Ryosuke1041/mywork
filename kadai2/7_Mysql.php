@@ -154,18 +154,22 @@ if(!empty($_POST["edit"])){
 
 <?php
 
-$id = 3;
+$id = 1;
 $dbh = new PDO($dsn, $db_user, $db_pass);
-$stmt = $dbh->prepare("SELECT * FROM namelist WHERE id >= 1");
-// $sql = $stmt->bindValue( ':id', $id, PDO::PARAM_INT);
+$stmt = $dbh->prepare("SELECT * FROM namelist ");
+// $sql = $stmt->bindValue( 'id', $id, PDO::PARAM_INT);
 $execute = $stmt->execute();
 if($execute) {
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    print_r($result);
+    // print_r($result);
+    echo "<br>";
+    foreach($result as $output){
+        echo "ID ".$output['id']." NAME ".$output['name']." COMMENT ".$output['comment']." DATE ".$output['date']."<br>";
+    }
     echo "selectしました。";
-}// else{
-//     echo "selectできません。";
-// }
+}else{
+    echo "selectできません。";
+}
 
 // if(file_exists("9.txt")){
 //     $fileName = file("9.txt");
