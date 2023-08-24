@@ -7,17 +7,7 @@ $preurl = $_SERVER['HTTP_REFERER'];
 date_default_timezone_set('Japan');
 $date = date("Y/m/d H:i:s");
 
-if(isset($_POST['edit_flag'])&&($_POST['edit_flag'] != 0)){
-    $editFlag = $_POST['edit_flag'];
-
-    try {
-        $stmt = $dbh->prepare('UPDATE boardlist SET name = :name, comment = :comment, date = :date WHERE postid = :id');
-        $stmt->execute(array(':name' => $cookiename, ':comment' => $_POST['comment'], ':date' => $date, ':id' => $editFlag));
-    
-    } catch (Exception $e) {
-              echo 'エラーが発生しました。:' . $e->getMessage();
-    }
-}elseif($preurl == "http://localhost/kadai/kadai3/comfirm.php"){
+if($preurl == "http://localhost/kadai/kadai3/comfirm.php"){
     if(isset($_POST["name"]) && isset($_POST["pass"])){
         $add = 'insert into userlist (name, pass) values (:name, :pass)';
         $stmt = $dbh->prepare($add);
@@ -73,7 +63,17 @@ if(isset($cookieid)){
 }
 
 
-if(isset($_POST['comment'])){
+if(isset($_POST['edit_flag'])&&($_POST['edit_flag'] != 0)){
+    $editFlag = $_POST['edit_flag'];
+
+    try {
+        $stmt = $dbh->prepare('UPDATE boardlist SET name = :name, comment = :comment, date = :date WHERE postid = :id');
+        $stmt->execute(array(':name' => $cookiename, ':comment' => $_POST['comment'], ':date' => $date, ':id' => $editFlag));
+    
+    } catch (Exception $e) {
+              echo 'エラーが発生しました。:' . $e->getMessage();
+    }
+}elseif(isset($_POST['comment'])){
     echo $cookieid;
     $add = 'insert into boardlist (userid, name, comment, date) values (:id, :name, :comment, :date)';
     $stmt = $dbh->prepare($add);
